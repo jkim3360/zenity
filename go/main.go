@@ -4,6 +4,7 @@ package main
 import (
 	"context"
 	"log/slog"
+	"net/url"
 	"os"
 	"os/signal"
 	"strconv"
@@ -27,6 +28,9 @@ func main() {
 	window := envDuration("WINDOW", time.Minute)
 	queueSize := envInt("QUEUE_SIZE", 1000)
 	jetstreamURL := env("JETSTREAM_URL", "wss://jetstream2.us-east.bsky.network/subscribe")
+	if u, err := url.Parse(jetstreamURL); err != nil || (u.Scheme != "ws" && u.Scheme != "wss") {
+		fatal("JETSTREAM_URL must be a ws:// or wss:// URL", "value", jetstreamURL)
+	}
 	slog.Info("starting", "keywords", keywords, "engagement_threshold", engagementThreshold, "follow_threshold", followThreshold,
 		"window_seconds", window.Seconds(), "queue_size", queueSize)
 
