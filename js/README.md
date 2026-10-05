@@ -63,12 +63,12 @@ Run these from this `js/` folder.
    kubectl logs deployment/jetstream-router-js | grep -E 'keyword notification|engagement alert|follow burst'
    kubectl logs deployment/jetstream-router-js | grep 'lane stats' | tail -4
    ```
-5. Optional: watch a common word. Config is read at startup, so change the ConfigMap and restart. The old pod logs its final `lane stats` as it stops:
+5. Optional: watch a common word. Config is read at startup, so change the ConfigMap and restart. The old pod logs its final `lane stats` as it stops, and the new pod's notifications for `the` stream in (Ctrl-C to stop watching):
    ```sh
    kubectl patch configmap jetstream-router-js --type merge -p '{"data":{"KEYWORDS":"the"}}'
    kubectl rollout restart deployment/jetstream-router-js
    kubectl rollout status deployment/jetstream-router-js
-   kubectl logs deployment/jetstream-router-js | grep -c 'keyword notification'
+   kubectl logs -f deployment/jetstream-router-js | grep 'keyword notification'
    ```
 6. Clean up (the second command also removes the Go app if it is running there):
    ```sh

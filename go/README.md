@@ -46,12 +46,12 @@ Run these from this `go/` folder.
    kubectl logs deployment/jetstream-router | grep -E 'keyword notification|engagement alert|follow burst'
    kubectl logs deployment/jetstream-router | grep 'lane stats' | tail -4
    ```
-6. Optional: watch a common word. Config is read at startup, so change the ConfigMap and restart. The old pod logs its final `lane stats` as it stops:
+6. Optional: watch a common word. Config is read at startup, so change the ConfigMap and restart. The old pod logs its final `lane stats` as it stops, and the new pod's notifications for `the` stream in (Ctrl-C to stop watching):
    ```sh
    kubectl patch configmap jetstream-router --type merge -p '{"data":{"KEYWORDS":"the"}}'
    kubectl rollout restart deployment/jetstream-router
    kubectl rollout status deployment/jetstream-router
-   kubectl logs deployment/jetstream-router | grep -c 'keyword notification'
+   kubectl logs -f deployment/jetstream-router | grep 'keyword notification'
    ```
 7. Clean up:
    ```sh
