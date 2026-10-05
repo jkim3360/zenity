@@ -34,7 +34,7 @@ npm test
 KEYWORDS=the npm start
 ```
 
-Ctrl-C stops the reader, lets each lane finish its queue, logs the final `lane stats` and exits 0.
+Ctrl-C stops the reader, lets each lane finish its queue and logs the final `lane stats`. Node exits 0; `npm` then reports the Ctrl-C as its own exit status, as it always does.
 
 ## Run it on kind
 
